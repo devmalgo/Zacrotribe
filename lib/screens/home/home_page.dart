@@ -2,9 +2,9 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/chat/your_feed_page.dart';
 import 'package:zacro_tribe/screens/crypto/crypto_tab_bar.dart';
+import 'package:zacro_tribe/screens/demo/test_page.dart';
 import 'package:zacro_tribe/screens/home/explore_page.dart';
 import 'package:zacro_tribe/screens/profile/profile_page.dart';
-import 'package:zacro_tribe/screens/search/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         child = const YourFeedPage();
         break;
       case 3:
-        child = const Center(child: Text("Wallet Page Content"),);
+        child = const ExampleAppPage();
         break;
       case 4:
         child = const ProfilePage();
