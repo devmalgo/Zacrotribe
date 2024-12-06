@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/home/home_page.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _LoginPageState extends State<LoginPage> {
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();

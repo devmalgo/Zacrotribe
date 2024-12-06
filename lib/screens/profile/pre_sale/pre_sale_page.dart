@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/profile/pre_sale/pre_sale_details_page.dart';
+import 'package:zacro_tribe/widgets/presale_list_widget.dart';
 
 class PreSalePage extends StatefulWidget {
   const PreSalePage({super.key});
@@ -78,10 +79,10 @@ class _PreSalePageState extends State<PreSalePage> with SingleTickerProviderStat
                 child: TabBarView(
                   controller: _saleTabController,
                   children: [
-                    CategoryTabs(bgColor: Colors.purple.shade100, progressColor: Colors.purple),
-                    CategoryTabs(bgColor: Colors.blue.shade100, progressColor: Colors.blue),
-                    CategoryTabs(bgColor: Colors.green.shade100, progressColor: Colors.green),
-                    CategoryTabs(bgColor: Colors.red.shade100, progressColor: Colors.red),
+                    PresaleListWidget(bgColor: Colors.purple.shade100, progressColor: Colors.purple),
+                    PresaleListWidget(bgColor: Colors.blue.shade100, progressColor: Colors.blue),
+                    PresaleListWidget(bgColor: Colors.green.shade100, progressColor: Colors.green),
+                    PresaleListWidget(bgColor: Colors.red.shade100, progressColor: Colors.red),
                   ],
                 ),
               ),
@@ -100,10 +101,10 @@ class CategoryTabs extends StatelessWidget {
 
   final List<Map<String, dynamic>> preSaleAirdrops = [
     {
-      'projectName': 'METAVERSE',
+      'projectName': 'META VERSE',
       'projectLogo': 'assets/images/thumb_1.png',
       'description': 'REGISTRATION IN:',
-      'coinLogo': 'assets/ethereum.png',
+      'coinLogo': 'assets/images/ethereum.png',
       'totalRaise': '100K',
       'value': '2.8M',
       'allowance': '\$0',
@@ -113,7 +114,7 @@ class CategoryTabs extends StatelessWidget {
       'projectName': 'PIXEL PIX',
       'projectLogo': 'assets/images/thumb_2.png',
       'description': 'REGISTRATION IN:',
-      'coinLogo': 'assets/binance.png',
+      'coinLogo': 'assets/images/binance.png',
       'totalRaise': '100K',
       'value': '1.5M',
       'allowance': '\$0',
@@ -144,6 +145,8 @@ class CategoryTabs extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Card(
                         shape: const RoundedRectangleBorder(),
@@ -155,7 +158,7 @@ class CategoryTabs extends StatelessWidget {
                           Text(preSaleData['description'], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      // Image.asset(preSaleData['coinLogo'], height: 12, width: 12, fit: BoxFit.contain,),
+                      Image.asset(preSaleData['coinLogo'], height: 30, width: 30, fit: BoxFit.contain,),
                     ],
                   ),
                   const SizedBox(height: 16,),
@@ -212,14 +215,14 @@ class CategoryTabs extends StatelessWidget {
 
   Widget buildInfoBadge(String text) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         text,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
     );
   }

@@ -1,5 +1,7 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/chat/your_feed_page.dart';
+import 'package:zacro_tribe/screens/crypto/crypto_tab_bar.dart';
 import 'package:zacro_tribe/screens/home/explore_page.dart';
 import 'package:zacro_tribe/screens/profile/profile_page.dart';
 import 'package:zacro_tribe/screens/search/search_page.dart';
@@ -11,87 +13,63 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   
-  late TabController _tabController;
-  final PageController _pageController = PageController();
+  int _selectedTabIndex = 0;
   
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
-  }
-  
-  @override
-  void dispose() {
-    _tabController.dispose();
-    _pageController.dispose();
-    super.dispose();
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          ExplorePage(),
-          SearchPage(),
-          YourFeedPage(),
-          Center(child: Text("Wallet Page Content"),),
-          ProfilePage(),
+      body: _buildPage(_selectedTabIndex),
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: const Color(0xFF2E2D2C),
+        style: TabStyle.flip,
+        color: Colors.white,
+        activeColor: Colors.white,
+        initialActiveIndex: _selectedTabIndex,
+        onTap: _onItemTapped,
+        items: [
+          TabItem(icon: Image.asset(_selectedTabIndex == 0 ? 'assets/icons/ic_home_at.png' : 'assets/icons/ic_home.png', height: 24, width: 24,), title: 'Home'),
+          TabItem(icon: Image.asset(_selectedTabIndex == 1 ? 'assets/icons/ic_search_at.png' : 'assets/icons/ic_search.png', height: 24, width: 24,), title: 'Search'),
+          TabItem(icon: Image.asset(_selectedTabIndex == 2 ? 'assets/icons/ic_msg_at.png' : 'assets/icons/ic_msg.png', height: 24, width: 24,), title: 'Chat'),
+          TabItem(icon: Image.asset(_selectedTabIndex == 3 ? 'assets/icons/ic_wallet_at.png' : 'assets/icons/ic_wallet.png', height: 24, width: 24,), title: 'Wallet'),
+          TabItem(icon: Image.asset(_selectedTabIndex == 4 ? 'assets/icons/ic_profile_at.png' : 'assets/icons/ic_profile.png', height: 24, width: 24,), title: 'Profile'),
         ],
-      ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _tabController.index,
-          backgroundColor: Colors.black.withOpacity(0.5),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          onTap: (int value) {
-            setState(() {
-              _tabController.index = value;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: _tabController.index == 0
-                  ? Image.asset('assets/icons/ic_home_at.png', height: 24, width: 24,)
-                  : Image.asset('assets/icons/ic_home.png', height: 24, width: 24,),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: _tabController.index == 1
-                  ? Image.asset('assets/icons/ic_search_at.png', height: 24, width: 24,)
-                  : Image.asset('assets/icons/ic_search.png', height: 24, width: 24,),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: _tabController.index == 2
-                  ? Image.asset('assets/icons/ic_msg_at.png', height: 24, width: 24,)
-                  : Image.asset('assets/icons/ic_msg.png', height: 24, width: 24,),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: _tabController.index == 3
-                  ? Image.asset('assets/icons/ic_wallet_at.png', height: 24, width: 24,)
-                  : Image.asset('assets/icons/ic_wallet.png', height: 24, width: 24,),
-              label: 'Wallet',
-            ),
-            BottomNavigationBarItem(
-              icon: _tabController.index == 4
-                  ? Image.asset('assets/icons/ic_profile_at.png', height: 24, width: 24,)
-                  : Image.asset('assets/icons/ic_profile.png', height: 24, width: 24,),
-              label: 'Profile',
-            ),
-          ],
-          type: BottomNavigationBarType.fixed,
-        ),
       ),
     );
   }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
+  Widget _buildPage(int index) {
+    Widget? child;
+    switch (index) {
+      case 0:
+        child = const ExplorePage();
+        break;
+      case 1:
+        child = const AirdropScreen();
+        break;
+      case 2:
+        child = const YourFeedPage();
+        break;
+      case 3:
+        child = const Center(child: Text("Wallet Page Content"),);
+        break;
+      case 4:
+        child = const ProfilePage();
+        break;
+    }
+    return Center(child: child,);
+  }
+
 }

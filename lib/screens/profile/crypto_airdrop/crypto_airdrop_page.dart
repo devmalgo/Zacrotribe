@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zacro_tribe/screens/profile/contact_us_page.dart';
 import 'package:zacro_tribe/screens/profile/crypto_airdrop/airdrop_page.dart';
+import 'package:zacro_tribe/widgets/airdrop_list_widget.dart';
 
 class CryptoAirdropPage extends StatefulWidget {
   const CryptoAirdropPage({super.key});
@@ -54,10 +56,10 @@ class _CryptoAirdropPageState extends State<CryptoAirdropPage> with SingleTicker
               height: MediaQuery.of(context).size.height * 0.6,
               child: TabBarView(
                 controller: _cadTabController,
-                children: [
-                  AirdropListView(),
-                  AirdropListView(),
-                  AirdropListView(),
+                children: const [
+                  AirdropListWidget(),
+                  AirdropListWidget(),
+                  AirdropListWidget(),
                 ],
               ),
             ),
@@ -85,7 +87,9 @@ class _CryptoAirdropPageState extends State<CryptoAirdropPage> with SingleTicker
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 24,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ContactUsPage()));
+                          },
                           elevation: 1,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -173,7 +177,7 @@ class AirdropListView extends StatelessWidget {
           subtitle: Text("Action: ${airdrops[index]['action']}"),
           trailing: IconButton(onPressed: () {}, icon: Image.asset("assets/icons/ic_airdrop.png", height: 14, width: 14,)),
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AirdropPage(imgUrl: airdrops[index]['image']!,)));
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AirdropPage(imgUrl: airdrops[index]['image']!, id: '',)));
           },
         );
       },

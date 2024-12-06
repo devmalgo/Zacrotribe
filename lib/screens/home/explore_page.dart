@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:zacro_tribe/screens/home/news_page.dart';
+import 'package:zacro_tribe/screens/home/discover_page.dart';
+import 'package:zacro_tribe/screens/home/explore_more_news_page.dart';
+import 'package:zacro_tribe/screens/home/explore_news_page.dart';
+
+import 'blank_page.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
 
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> with SingleTickerProviderStateMixin {
+class _ExplorePageState extends State<ExplorePage> {
 
-  late TabController _tabController;
-  final PageController _pageController = PageController();
+  // Track the selected tab index
+  int _selectedIndex = 0;
+  // Tabs data
+  final List<String> _tabs = ['All', 'DeFi', 'GameFi', 'Video', 'Ethereum'];
+  final ScrollController _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-  }
+  final List<Widget> _pages = [
+    ExploreNewsPage(),
+    ExploreMoreNewsPage(),
+    ExploreMoreNewsPage(),
+    ExploreMoreNewsPage(),
+    BlankPage(),
+  ];
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _pageController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollToIndex(int index) {
+    double offset = index * 90.0;
+    _scrollController.animateTo(offset, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: Builder(
           builder: (context) => IconButton(
             onPressed: () {
@@ -40,137 +53,101 @@ class _ExplorePageState extends State<ExplorePage> with SingleTickerProviderStat
             icon: Image.asset('assets/icons/ic_menu.png', height: 24, width: 24,),
           ),
         ),
-        title: const Text("Daily News", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),),
-        centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Image.asset('assets/icons/ic_notification.png', height: 20, width: 20,)),
-          IconButton(onPressed: () {}, icon: Image.asset('assets/icons/ic_gift.png', height: 20, width: 20,)),
-          const CircleAvatar(
-            radius: 16,
-            backgroundImage: AssetImage('assets/images/profile.png'),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DiscoverPage()));
+                },
+                child: Image.asset('assets/icons/ic_discover.png', height: 24, width: 24,),
+              ),
+              const SizedBox(width: 15,),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BlankPage()));
+                },
+                child: Image.asset('assets/icons/ic_reward.png', height: 24, width: 24,),
+              ),
+              const SizedBox(width: 15,),
+              GestureDetector(
+                onTap: () {},
+                child: const CircleAvatar(
+                  radius: 12,
+                  backgroundImage: AssetImage('assets/images/profile.png'),
+                ),
+              ),
+              const SizedBox(width: 25,),
+            ],
           ),
-          const SizedBox(width: 10,),
         ],
+        shadowColor: Colors.black.withOpacity(0.5),
       ),
       drawer: const MyDrawer(),
-      body: SingleChildScrollView(
+      backgroundColor: Colors.white, // Match the background
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TabBar(
-              controller: _tabController,
-              indicatorColor: const Color(0xFFED222E),
-              labelColor: Colors.black,
-              labelStyle: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14, color: Colors.black),
-              tabs: const [
-                Tab(text: "My Feed",),
-                Tab(text: "Latest News",),
-                Tab(text: "Top News",),
-                Tab(text: "Trader",),
-              ],
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 25.0),
+              child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),),
             ),
-            SizedBox(
-              height: 210,
-              child: PageView(
-                controller: _pageController,
-                children: [
-                  _buildTopNewsBanner('assets/images/banner_img.png'),
-                  _buildTopNewsBanner('assets/images/banner_img_2.png'),
-                  _buildTopNewsBanner('assets/images/banner_img.png'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10,),
-            SmoothPageIndicator(
-              controller: _pageController,
-              count: 3,
-              effect: const WormEffect(
-                dotWidth: 8.0,
-                dotHeight: 8.0,
-                dotColor: Colors.grey,
-                activeDotColor: Color(0xFFED222E),
-              ),
-            ),
-            const SizedBox(height: 10,),
-            Flexible(
+            // Custom Tab Bar
+            Container(
+              height: 26, // Height of the custom tab bar
+              margin: const EdgeInsets.symmetric(vertical: 6), // Vertical spacing
               child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 4,
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: _tabs.length,
                 itemBuilder: (context, index) {
-                  return newsItem("assets/images/ct_img_1.png");
+                  final isSelected = _selectedIndex == index;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index; // Update selected index
+                      });
+                      _scrollToIndex(index);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: isSelected ? Colors.red : Colors.transparent,
+                        borderRadius: BorderRadius.circular(30), // Rounded edges
+                        border: Border.all(
+                          color: isSelected ? Colors.red : const Color(0xFFDDDDDD),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Text(
+                        _tabs[index],
+                        style: TextStyle(
+                          fontSize: 14, // Font size for text
+                          color: isSelected ? Colors.white : const Color(0xFFDDDDDD),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopNewsBanner(String imgPath) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        image: DecorationImage(image: AssetImage(imgPath), fit: BoxFit.cover),
-      ),
-    );
-  }
-
-  Widget newsItem(String imgPath) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsPage()));
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Cryptocurrency Values Surged \nAbove \$60,000, Reaching Its \nHighest Point Since 2021.", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black),),
-                SizedBox(height: 15,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("LoremIpsum.Net", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Colors.black),),
-                    SizedBox(width: 10,),
-                    Text('27 Min', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: Colors.black),),
-                    SizedBox(width: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.bookmark_border, size: 10,),
-                        SizedBox(width: 5,),
-                        Icon(Icons.mode_comment_outlined, size: 10,),
-                        SizedBox(width: 5,),
-                        Icon(Icons.share, size: 10,),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Container(
-              height: 100,
-              width: 120,
-              margin: const EdgeInsets.only(left: 17),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(image: AssetImage(imgPath), fit: BoxFit.contain),
-              ),
+            // Tab Content
+            Expanded(
+              child: _pages[_selectedIndex],
             ),
           ],
         ),
       ),
     );
   }
-
 }
 
 class MyDrawer extends StatelessWidget {

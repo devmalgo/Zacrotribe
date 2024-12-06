@@ -1,37 +1,97 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:http/http.dart' as http;
+import 'package:zacro_tribe/model/airdrop_model.dart';
+import 'package:zacro_tribe/utils/app_constants.dart';
 
-class AirdropPage extends StatelessWidget {
+class AirdropPage extends StatefulWidget {
 
+  final String id;
   final String imgUrl;
+  final String content;
 
-  const AirdropPage({super.key, required this.imgUrl});
+  const AirdropPage({super.key, required this.id, required this.imgUrl, required this.content});
 
+  @override
+  State<AirdropPage> createState() => _AirdropPageState();
+}
+
+class _AirdropPageState extends State<AirdropPage> {
+
+  @override
+  void initState() {
+    // getAirdrop(widget.id);
+    super.initState();
+  }
+  
+  Future<AirdropModel> getAirdrop(String id) async {
+    final apiUrl = Uri.parse('${appConstants.baseUrl}/getSingleAirdrop?_id=$id');
+    try {
+      final response = await http.get(
+        apiUrl,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appConstants.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> bodyData = jsonDecode(response.body);
+        print('GetSingleAirdropSuccess: ${response.statusCode}, Data: $bodyData');
+        return AirdropModel.fromJson(jsonDecode(response.body));
+      } else {
+        final Map<String, dynamic> errorBodyData = jsonDecode(response.body);
+        throw Exception("GetSingleAirdropFailed: ${response.statusCode}, Msg:${errorBodyData['message']}");
+      }
+    } catch (e) {
+      throw Exception("GetSingleAirdropError: $e");
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Image.asset(
-                imgUrl, // Replace with your logo asset path
-                height: 100,
+      backgroundColor: Colors.white,
+      body: FutureBuilder<AirdropModel>(
+        future: getAirdrop(widget.id),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator(color: Color(0xFFED222E),),);
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"),);
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(child: Text("Data Not Available"),);
+          } else {
+            final airdrop = snapshot.data!.data!;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    Center(
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(airdrop.image!),
+                        backgroundColor: Colors.grey[200],
+                        radius: 50,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildCounterBadge(airdrop.totalValue!),
+                    const SizedBox(height: 20),
+                    HtmlWidget(airdrop.content!, textStyle: const TextStyle(fontSize: 16, color: Colors.black),),
+                    const SizedBox(height: 20),
+                    _buildClaimButton(),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              _buildCounterBadge(3603),
-              const SizedBox(height: 20),
-              _buildAirdropInfo(),
-              const SizedBox(height: 20),
-              _buildStepByStepGuide(),
-              const SizedBox(height: 20),
-              _buildClaimButton(),
-            ],
-          ),
-        ),
+            );
+          }
+        },
       ),
     );
   }
@@ -119,7 +179,7 @@ class AirdropPage extends StatelessWidget {
   Widget _buildClaimButton() {
     return ElevatedButton(
       onPressed: () {
-        // Add your airdrop claim logic here
+
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue[50],

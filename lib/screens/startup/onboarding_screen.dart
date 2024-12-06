@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:zacro_tribe/screens/auth/sign_in_page.dart';
 import 'package:zacro_tribe/screens/startup/select_flow_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -102,7 +103,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         children: [
                           const Text("You have account?  ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black),),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignInPage()));
+                            },
                             child: const Text("Sign in", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFFED222E)),),
                           ),
                         ],

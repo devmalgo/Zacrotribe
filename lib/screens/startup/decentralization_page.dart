@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zacro_tribe/screens/startup/sign_in_page.dart';
+import 'package:zacro_tribe/screens/startup/login_page.dart';
 
 class DecentralizationPage extends StatelessWidget {
   const DecentralizationPage({super.key});
@@ -71,7 +71,7 @@ class DecentralizationPage extends StatelessWidget {
                       Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignInPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     elevation: 1,
@@ -114,7 +114,7 @@ class DecentralizationPage extends StatelessWidget {
                       Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignInPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     elevation: 1,
@@ -157,7 +157,7 @@ class DecentralizationPage extends StatelessWidget {
                       Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignInPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     elevation: 1,

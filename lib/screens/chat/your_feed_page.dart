@@ -28,21 +28,6 @@ class _YourFeedPageState extends State<YourFeedPage> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        /*title: TextFormField(
-          decoration: InputDecoration(
-            hintText: "Search News",
-            prefixIcon: const Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: BorderSide.none,
-            ),
-            filled: true,
-            fillColor: Colors.grey[200],
-          ),
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
-        ],*/
         title: TabBar(
           controller: feedTabController,
           indicatorColor: const Color(0xFF4A90E2),
