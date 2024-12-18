@@ -79,10 +79,10 @@ class _PreSalePageState extends State<PreSalePage> with SingleTickerProviderStat
                 child: TabBarView(
                   controller: _saleTabController,
                   children: [
-                    PresaleListWidget(bgColor: Colors.purple.shade100, progressColor: Colors.purple),
-                    PresaleListWidget(bgColor: Colors.blue.shade100, progressColor: Colors.blue),
-                    PresaleListWidget(bgColor: Colors.green.shade100, progressColor: Colors.green),
-                    PresaleListWidget(bgColor: Colors.red.shade100, progressColor: Colors.red),
+                    CategoryTabs(bgColor: Colors.purple.shade100, progressColor: Colors.purple),
+                    CategoryTabs(bgColor: Colors.blue.shade100, progressColor: Colors.blue),
+                    CategoryTabs(bgColor: Colors.green.shade100, progressColor: Colors.green),
+                    CategoryTabs(bgColor: Colors.red.shade100, progressColor: Colors.red),
                   ],
                 ),
               ),

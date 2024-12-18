@@ -2,16 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:toggle_list/toggle_list.dart';
 import 'package:zacro_tribe/model/presale_list_model.dart';
 import 'package:zacro_tribe/screens/home/news_feed_web_page.dart';
 import 'package:zacro_tribe/utils/app_constants.dart';
 
 class PresaleListWidget extends StatefulWidget {
 
-  final Color bgColor;
-  final Color progressColor;
-
-  const PresaleListWidget({super.key, required this.bgColor, required this.progressColor});
+  const PresaleListWidget({super.key});
 
   @override
   State<PresaleListWidget> createState() => _PresaleListWidgetState();
@@ -57,112 +55,126 @@ class _PresaleListWidgetState extends State<PresaleListWidget> {
           return Center(child: Text("Error: ${snapshot.error}"),);
         } else {
           final presales = snapshot.data!.data!;
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            itemCount: presales.length,
-            itemBuilder: (context, index) {
-              final presaleData = presales[index];
-              return Column(
-                children: [
-                  Container(
+          return ToggleList(
+            divider: const SizedBox(height: 10,),
+            toggleAnimationDuration: const Duration(microseconds: 300),
+            scrollPosition: AutoScrollPosition.begin,
+            trailing: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: Icon(Icons.expand_more, color: Color(0xFFEE333E),),
+            ),
+            children: List.generate(
+              presales.length, (index) {
+                final presale = presales[index];
+                return ToggleListItem(
+                  title: Container(
                     padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: widget.bgColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        // Leading icon
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 24,
+                            child: Image.network(presale.image!),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Title and subtitle
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Image.network(presaleData.image!, height: 40, width: 40, fit: BoxFit.cover,),
+                            Text(presale.name!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14,),),
+                            Text("Category: ${presale.category!}", style: const TextStyle(color: Colors.grey, fontSize: 12,),),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  content: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        // Launch, Price, Type, Boost Row
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text("In 27 Days", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                                Text("Launch", style: TextStyle(color: Colors.grey, fontSize: 12),),
+                              ],
                             ),
                             Column(
                               children: [
-                                Text(presaleData.name!, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                                const Text('REGISTRATION IN', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                Text("1.2M USDT", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                                Text("Price", style: TextStyle(color: Colors.grey, fontSize: 12),),
                               ],
                             ),
-                            Image.asset('assets/images/binance.png', height: 30, width: 30, fit: BoxFit.contain,),
+                            Column(
+                              children: [
+                                Text("ETH", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                                Text("Type", style: TextStyle(color: Colors.grey, fontSize: 12),),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text("x32", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                                Text("Boost", style: TextStyle(color: Colors.grey, fontSize: 12),),
+                              ],
+                            ),
                           ],
-                        ),
-                        const SizedBox(height: 16,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            buildInfoBadge("TOTAL RAISE 100K"),
-                            buildInfoBadge("VALUE 2.8M"),
-                            buildInfoBadge("MIN ALLOW \$10"),
-                          ],
-                        ),
-                        const SizedBox(height: 16,),
-                        LinearProgressIndicator(
-                          value: 0.3,
-                          backgroundColor: Colors.grey.shade300,
-                          color: widget.progressColor,
-                          minHeight: 8,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          '0/100,069 MECHA',
-                          style: TextStyle(fontSize: 12),
                         ),
                         const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            OutlinedButton(
-                              onPressed: () {
-                                if (presaleData.presaleLink != null || presaleData.presaleLink!.isEmpty) {
-                                  print('PreSaleLink: ${presaleData.presaleLink}');
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewsFeedWebPage(title: presaleData.name!, websiteLink: presaleData.presaleLink!)));
-                                } else {
-                                  print('Data Link is Empty');
-                                }
-                              },
-                              child: const Text('PARTICIPATE', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
+                        // Take Part Button
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFED222E),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            const Row(
-                              children: [
-                                Icon(Icons.clear_sharp, size: 20),
-                                SizedBox(width: 8),
-                                Icon(Icons.telegram, size: 20),
-                                SizedBox(width: 8),
-                                Icon(Icons.discord, size: 20),
-                              ],
+                          ),
+                          child: const Text("Take part", style: TextStyle(color: Colors.white),),
+                        ),
+                        const SizedBox(height: 16),
+                        // Social Media Icons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset('assets/icons/ic_twitter.png', height: 24, width: 24,),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset('assets/icons/ic_telegram.png', height: 24, width: 24,),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset('assets/icons/ic_discord.png', height: 24, width: 24,),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10,),
-                ],
-              );
-            },
+                  headerDecoration: BoxDecoration(
+                    color: Colors.pink[50],
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  expandedHeaderDecoration: BoxDecoration(
+                    color: Colors.pink[50],
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+                  ),
+                );
+              },
+            ),
           );
         }
       },
-    );
-  }
-
-  Widget buildInfoBadge(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      ),
     );
   }
 

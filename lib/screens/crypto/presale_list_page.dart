@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:zacro_tribe/widgets/airdrop_list_widget.dart';
+import 'package:zacro_tribe/widgets/presale_list_widget.dart';
 
-class AirdropListPage extends StatefulWidget {
-  const AirdropListPage({super.key});
+class PresaleListPage extends StatefulWidget {
+  const PresaleListPage({super.key});
 
   @override
-  State<AirdropListPage> createState() => _AirdropListPageState();
+  State<PresaleListPage> createState() => _PresaleListPageState();
 }
 
-class _AirdropListPageState extends State<AirdropListPage> {
+class _PresaleListPageState extends State<PresaleListPage> {
 
-  // Track the selected tab index
   int _selectedIndex = 0;
 
-  // Tabs data
   final List<String> _tabs = ['All', 'Latest', 'Hottest', 'Potential'];
   final ScrollController _scrollController = ScrollController();
 
   final List<Widget> _pages = [
-    const AirdropListWidget(),
-    const AirdropListWidget(),
-    const AirdropListWidget(),
-    const AirdropListWidget(),
+    const PresaleListWidget(),
+    const PresaleListWidget(),
+    const PresaleListWidget(),
+    const PresaleListWidget(),
   ];
 
   @override

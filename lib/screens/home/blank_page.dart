@@ -8,6 +8,13 @@ class BlankPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset('assets/icons/ic_back_arrow.png', height: 24, width: 24,),
+        ),
+        shadowColor: Colors.black.withOpacity(0.5),
       ),
       backgroundColor: Colors.white,
       body: const Center(

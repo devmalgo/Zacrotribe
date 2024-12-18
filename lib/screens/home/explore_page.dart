@@ -44,13 +44,11 @@ class _ExplorePageState extends State<ExplorePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              // Open the Drawer
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Image.asset('assets/icons/ic_menu.png', height: 24, width: 24,),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: GestureDetector(
+            onTap: () {},
+            child: Image.asset('assets/images/profile.png', height: 34, width: 34,),
           ),
         ),
         actions: [
@@ -63,22 +61,14 @@ class _ExplorePageState extends State<ExplorePage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DiscoverPage()));
                 },
-                child: Image.asset('assets/icons/ic_discover.png', height: 24, width: 24,),
+                child: Image.asset('assets/icons/ic_discover.png', height: 34, width: 34,),
               ),
               const SizedBox(width: 15,),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BlankPage()));
                 },
-                child: Image.asset('assets/icons/ic_reward.png', height: 24, width: 24,),
-              ),
-              const SizedBox(width: 15,),
-              GestureDetector(
-                onTap: () {},
-                child: const CircleAvatar(
-                  radius: 12,
-                  backgroundImage: AssetImage('assets/images/profile.png'),
-                ),
+                child: Image.asset('assets/icons/ic_reward.png', height: 34, width: 34,),
               ),
               const SizedBox(width: 25,),
             ],
@@ -86,7 +76,6 @@ class _ExplorePageState extends State<ExplorePage> {
         ],
         shadowColor: Colors.black.withOpacity(0.5),
       ),
-      drawer: const MyDrawer(),
       backgroundColor: Colors.white, // Match the background
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -94,13 +83,13 @@ class _ExplorePageState extends State<ExplorePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 25.0),
-              child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),),
+              padding: EdgeInsets.only(bottom:  25.0),
+              child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36, color: Colors.black),),
             ),
             // Custom Tab Bar
             Container(
               height: 26, // Height of the custom tab bar
-              margin: const EdgeInsets.symmetric(vertical: 6), // Vertical spacing
+              margin: const EdgeInsets.only(right: 6, bottom: 6), // Vertical spacing
               child: ListView.builder(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
@@ -161,7 +150,7 @@ class MyDrawer extends StatelessWidget {
           const SizedBox(height: 20,),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               children: [
                 DrawerItem(
                   icon: 'assets/icons/ic_settings.png',

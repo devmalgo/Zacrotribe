@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/auth/sign_up_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:zacro_tribe/screens/demo/demo_home_page.dart';
 import 'package:zacro_tribe/screens/home/home_page.dart';
 import 'package:zacro_tribe/utils/app_constants.dart';
 import 'package:zacro_tribe/utils/auth_service.dart';
@@ -63,7 +64,7 @@ class _SignInPageState extends State<SignInPage> {
           await _authService.login(token);
           appConstants.accessToken = token;
           print('SignInSuccess: ${response.statusCode}, Msg: ${bodyData['message']}, Token: ${appConstants.accessToken}, Data: $bodyData');
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DemoHomePage()));
         } else {
           print('SignInSuccess: ${response.statusCode}, Msg: ${bodyData['message']}, Data: $bodyData');
         }

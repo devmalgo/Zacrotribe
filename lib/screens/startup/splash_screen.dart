@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zacro_tribe/screens/demo/demo_home_page.dart';
 import 'package:zacro_tribe/screens/home/home_page.dart';
 import 'package:zacro_tribe/screens/startup/onboarding_screen.dart';
 import 'package:zacro_tribe/utils/auth_service.dart';
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
         // Navigate to HomePage if user is logged in
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const DemoHomePage()),
         );
       } else {
         // Navigate to OnboardingScreen if user is not logged in

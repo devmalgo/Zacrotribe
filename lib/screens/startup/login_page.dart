@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zacro_tribe/screens/demo/demo_home_page.dart';
 import 'package:zacro_tribe/screens/home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (formKey.currentState!.validate()) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) => const DemoHomePage()),
                   );
                 }
               },

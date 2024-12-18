@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/home/explore_more_news_page.dart';
-import 'package:zacro_tribe/screens/home/explore_news_page.dart';
-
-import 'blank_page.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -99,7 +96,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 suffixIcon: IconButton(onPressed: () {}, icon: Image.asset('assets/icons/ic_sort.png', height: 24, width: 24,)),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             // Custom Tab Bar
             Container(
               height: 26, // Height of the custom tab bar

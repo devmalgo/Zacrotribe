@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark, // Use dark icons on the status bar (or Brightness.light for light icons)
     ));
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Zacro Tribe',
       theme: ThemeData(
         // This is the theme of your application.
         //

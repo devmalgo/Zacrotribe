@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:zacro_tribe/model/airdrop_list_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:zacro_tribe/screens/crypto/airdrop_details_page.dart';
 import 'package:zacro_tribe/utils/app_constants.dart';
 
 class AirdropListWidget extends StatefulWidget {
@@ -51,7 +52,20 @@ class _AirdropListWidgetState extends State<AirdropListWidget> {
             itemBuilder: (context, index) {
               final airdrop = airdrops[index];
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AirdropDetailsPage(
+                          title: airdrop.name!,
+                          content: airdrop.content!,
+                          platform: airdrop.platform!,
+                          category: airdrop.category!,
+                          totalValue: airdrop.totalValue!,
+                          imgUrl: airdrop.image!,
+                          date: airdrop.createdAt!)
+                    ),
+                  );
+                },
                 child: Container(
                   height: 50,
                   padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:zacro_tribe/screens/chat/your_feed_page.dart';
 import 'package:zacro_tribe/screens/crypto/crypto_tab_bar.dart';
 import 'package:zacro_tribe/screens/demo/test_page.dart';
+import 'package:zacro_tribe/screens/home/blank_page.dart';
 import 'package:zacro_tribe/screens/home/explore_page.dart';
 import 'package:zacro_tribe/screens/profile/profile_page.dart';
+import 'package:zacro_tribe/screens/traders/traders_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -60,13 +62,13 @@ class _HomePageState extends State<HomePage> {
         child = const AirdropScreen();
         break;
       case 2:
-        child = const YourFeedPage();
+        child = const TradersListPage();
         break;
       case 3:
-        child = const ExampleAppPage();
+        child = const BlankPage();
         break;
       case 4:
-        child = const ProfilePage();
+        child = const BlankPage();
         break;
     }
     return Center(child: child,);

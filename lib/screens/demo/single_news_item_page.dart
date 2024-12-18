@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:intl/intl.dart';
 import 'package:zacro_tribe/widgets/demo/single_news_item_header_delegate.dart';
 
 class SingleNewsItemPage extends StatelessWidget {
@@ -22,6 +23,12 @@ class SingleNewsItemPage extends StatelessWidget {
     required this.date
   });
 
+  String formatDate(String? date) {
+    DateTime parsedDate = DateTime.parse(date!);
+    String formattedDate = DateFormat('MMM dd, yyyy').format(parsedDate);
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
@@ -35,7 +42,7 @@ class SingleNewsItemPage extends StatelessWidget {
               title: title,
               category: category,
               imgUrl: imgUrl,
-              date: date,
+              date: formatDate(date),
               topPadding: topPadding,
               maxExtent: maxScreenSizeHeight / 2,
               minExtent: topPadding + 56,
@@ -44,55 +51,70 @@ class SingleNewsItemPage extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(25.0),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(40.0)),
-                color: Colors.white
+                color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(category, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xFFEE333E)),),
-                  const SizedBox(height: 15,),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(author, style: Theme.of(context).textTheme.headlineMedium,),
-                      const SizedBox(width: 10,),
-                      const Icon(Icons.verified_rounded, color: Colors.blue,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            category,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFEE333E),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                author,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Icon(
+                                Icons.verified_rounded,
+                                color: Colors.blue,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Image.asset(
+                          "assets/icons/ic_copy_link.png",
+                          height: 34,
+                          width: 34,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ],
                   ),
+                  const SizedBox(height: 20),
                   HtmlWidget(content),
-                  const SizedBox(height: 16),
                   const Text(
                     "Comments",
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Write a comment...",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: const Text("Post comments", style: TextStyle(color: Colors.white),),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
